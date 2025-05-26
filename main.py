@@ -34,13 +34,15 @@ async def contact_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.message.from_user
     source_tag = context.chat_data.get('source', 'unknown')
 
+    username = f"@{user.username}" if user.username else "—"
     text = (
-    f"📥 Новый отклик\n"
-    f"Имя: {user.first_name or '-'}\n"
-    f"{f'Username: @{user.username}' if user.username else 'Username: —'}\n"
-    f"Телефон: {contact.phone_number}\n"
-    f"Источник: {source_tag}"
+        f"📥 Новый отклик\n"
+        f"Имя: {user.first_name or '-'}\n"
+        f"Username: {username}\n"
+        f"Телефон: {contact.phone_number}\n"
+        f"Источник: {source_tag}"
 )
+
 
     await context.bot.send_message(chat_id=TARGET_CHAT, text=text)
     await update.message.reply_text("Спасибо! Мы свяжемся с вами в ближайшее время.")
