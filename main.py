@@ -21,7 +21,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
 
     await update.message.reply_text(
-        "Привет! Чтобы оставить отклик, нажми кнопку ниже и отправь номер телефона.",
+        "Привет! Чтобы оставить отклик, нажмите кнопку ниже и отправь номер телефона.",
         reply_markup=reply_markup
     )
 
@@ -43,7 +43,7 @@ async def contact_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 )
 
     await context.bot.send_message(chat_id=TARGET_CHAT, text=text)
-    await update.message.reply_text("Спасибо! Мы свяжемся с тобой в ближайшее время.")
+    await update.message.reply_text("Спасибо! Мы свяжемся с вами в ближайшее время.")
 
 # Основной запуск
 app = ApplicationBuilder().token(BOT_TOKEN).build()
