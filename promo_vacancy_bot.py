@@ -10,15 +10,15 @@ TARGET_CHAT = '@spa_promo_vacancy_bot'
 
 # Хэндлер команды /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # Сохраняем метку канала из ссылки
+    # Получаем метку из ссылки
     source_tag = context.args[0] if context.args else 'unknown'
+
+    # Сохраняем метку в контексте чата
+    context.chat_data['source'] = source_tag
 
     # Кнопка для отправки номера
     keyboard = [[KeyboardButton("Отправить номер", request_contact=True)]]
     reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
-
-    # Сохраняем метку в пользовательском контексте
-    context.user_data['source'] = source_tag
 
     await update.message.reply_text(
         "Привет! Чтобы оставить отклик, нажми кнопку ниже и отправь номер телефона.",
@@ -27,17 +27,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # Хэндлер получения номера
 async def contact_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print("DEBUG — contact handler triggered")
+    print("RAW update:", update)
+    print("RAW context.user_data:", context.user_data)
     contact = update.message.contact
     user = update.message.from_user
-    source_tag = context.user_data.get('source', 'unknown')
+    source_tag = context.chat_data.get('source', 'unknown')
 
     text = (
-        f"📥 Новый отклик\n"
-        f"Имя: {user.first_name or '-'}\n"
-        f"Username: @{user.username}" if user.username else "Username: —" + "\n"
-        f"Телефон: {contact.phone_number}\n"
-        f"Источник: {source_tag}"
-    )
+    f"📥 Новый отклик\n"
+    f"Имя: {user.first_name or '-'}\n"
+    f"{f'Username: @{user.username}' if user.username else 'Username: —'}\n"
+    f"Телефон: {contact.phone_number}\n"
+    f"Источник: {source_tag}"
+)
 
     await context.bot.send_message(chat_id=TARGET_CHAT, text=text)
     await update.message.reply_text("Спасибо! Мы свяжемся с тобой в ближайшее время.")
