@@ -2,7 +2,6 @@ from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 import os
 from dotenv import load_dotenv
-import requests
 import threading
 import time
 
