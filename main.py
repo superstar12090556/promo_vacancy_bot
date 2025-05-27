@@ -50,16 +50,6 @@ async def contact_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=TARGET_CHAT, text=text)
     await update.message.reply_text("Спасибо! Мы свяжемся с вами в ближайшее время.")
 
-def self_ping():
-    while True:
-        try:
-            requests.get("https://promo-vacancy-bot.onrender.com")
-        except Exception as e:
-            print("self-ping failed:", e)
-        time.sleep(30)
-
-threading.Thread(target=self_ping).start()
-
 # Основной запуск
 app = ApplicationBuilder().token(BOT_TOKEN).build()
 app.add_handler(CommandHandler("start", start))
